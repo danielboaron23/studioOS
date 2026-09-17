@@ -16,16 +16,16 @@ interface StatCardProps {
 
 export function StatCard({ title, value, change, icon: Icon }: StatCardProps) {
   return (
-    <Card className="transition-[transform,box-shadow] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:shadow-md">
+    <Card className="bg-red-600 border-red-700 text-white transition-[transform,box-shadow] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:shadow-md">
       <CardHeader>
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
         <CardAction>
-          <Icon className="size-4 text-muted-foreground" />
+          <Icon className="size-4 text-red-100" />
         </CardAction>
       </CardHeader>
       <CardContent>
         <p className="text-2xl font-bold">{value}</p>
-        <p className="text-xs text-primary">
+        <p className="text-xs text-red-100">
           {change}
         </p>
       </CardContent>
