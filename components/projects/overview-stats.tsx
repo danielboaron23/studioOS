@@ -22,7 +22,10 @@ export function OverviewStats() {
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {stats.map((s) => (
-        <Card key={s.title}>
+        <Card
+          key={s.title}
+          className="border-red-200 bg-red-100 text-red-700 dark:border-red-900/50 dark:bg-red-900/30 dark:text-red-400"
+        >
           <CardHeader>
             <CardTitle className="text-base font-medium leading-6">
               {s.title}
