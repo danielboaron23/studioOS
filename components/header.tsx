@@ -4,10 +4,10 @@ import { useState, useEffect } from "react"
 import { Moon, Sun, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-
-const userName = "Hani Buskila"
+import { defaultSettings } from "@/components/settings/defaults"
+import { useSettings } from "@/components/settings/settings-store"
 
 function getInitials(name: string) {
   return name
@@ -60,6 +60,10 @@ function ThemeToggle() {
 }
 
 export function Header() {
+  // Name, role and avatar come from Settings → Profile (updates after Save).
+  const profile = (useSettings() ?? defaultSettings).profile
+  const userName = profile.name
+
   return (
     <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
       <SidebarTrigger className="-ml-1" />
@@ -76,9 +80,10 @@ export function Header() {
       <div className="flex items-center gap-2">
         <div className="hidden sm:flex flex-col items-end leading-tight">
           <span className="text-sm font-medium">{userName}</span>
-          <span className="text-xs text-muted-foreground">Product Designer</span>
+          <span className="text-xs text-muted-foreground">{profile.role}</span>
         </div>
         <Avatar size="sm">
+          {profile.avatar && <AvatarImage src={profile.avatar} alt={userName} />}
           <AvatarFallback className="bg-[#3b82f5] text-white font-bold">
             {getInitials(userName)}
           </AvatarFallback>

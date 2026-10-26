@@ -66,7 +66,9 @@ function NavGroup({
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.href}>
-              <SidebarMenuButton asChild isActive={pathname === item.href} tooltip={item.label}>
+              <SidebarMenuButton asChild isActive={
+                  item.href === "/" ? pathname === "/" : pathname.startsWith(item.href)
+                } tooltip={item.label}>
                 <Link href={item.href}>
                   <item.icon />
                   <span>{item.label}</span>
@@ -92,7 +94,7 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <NavGroup items={mainNav} label="Platform" />
-        <NavGroup items={secondaryNav} label="Workspace" />
+        <NavGroup items={secondaryNav} label="Studio" />
       </SidebarContent>
     </Sidebar>
   )
