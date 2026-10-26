@@ -86,3 +86,22 @@ export const Disabled: Story = {
     </RadioGroup>
   ),
 };
+
+export const Invalid: Story = {
+  render: () => (
+    <RadioGroup>
+      <div className="flex items-center space-x-2">
+        <RadioGroupItem value="option1" id="inv1" aria-invalid="true" />
+        <label htmlFor="inv1" className="text-sm leading-none">
+          Required option
+        </label>
+      </div>
+      <div className="flex items-center space-x-2">
+        <RadioGroupItem value="option2" id="inv2" aria-invalid="true" />
+        <label htmlFor="inv2" className="text-sm leading-none">
+          Another option
+        </label>
+      </div>
+    </RadioGroup>
+  ),
+};

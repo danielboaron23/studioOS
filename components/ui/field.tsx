@@ -2,16 +2,26 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { Slot } from "radix-ui"
 import { Label } from "./label"
 
-const FieldContext = React.createContext<{ id: string; error?: boolean }>({
+const FieldContext = React.createContext<{
+  id: string
+  descriptionId: string
+  errorId: string
+  invalid: boolean
+}>({
   id: "",
-  error: false,
+  descriptionId: "",
+  errorId: "",
+  invalid: false,
 })
 
 function useFieldContext() {
-  return React.useContext(FieldContext)
+  const context = React.useContext(FieldContext)
+  if (!context) {
+    throw new Error("Field components must be used within a Field component")
+  }
+  return context
 }
 
 function Field({
@@ -20,12 +30,20 @@ function Field({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   const id = React.useId()
-  const error = React.Children.toArray(children).some(
-    (child) => React.isValidElement(child) && child.type === FieldError
+  const descriptionId = `${id}-description`
+  const errorId = `${id}-error`
+  
+  const hasError = React.Children.toArray(children).some(
+    (child) => {
+      if (!React.isValidElement(child)) return false
+      if (child.type !== FieldError) return false
+      const props = child.props as { children?: React.ReactNode }
+      return !!props.children
+    }
   )
 
   return (
-    <FieldContext.Provider value={{ id, error }}>
+    <FieldContext.Provider value={{ id, descriptionId, errorId, invalid: hasError }}>
       <div data-slot="field" className={cn("space-y-2", className)} {...props}>
         {children}
       </div>
@@ -52,11 +70,11 @@ function FieldDescription({
   className,
   ...props
 }: React.HTMLAttributes<HTMLParagraphElement>) {
-  const { id } = useFieldContext()
+  const { descriptionId } = useFieldContext()
   return (
     <p
       data-slot="field-description"
-      id={`${id}-description`}
+      id={descriptionId}
       className={cn("text-xs text-muted-foreground", className)}
       {...props}
     />
@@ -68,7 +86,7 @@ function FieldError({
   children,
   ...props
 }: React.HTMLAttributes<HTMLParagraphElement>) {
-  const { id } = useFieldContext()
+  const { errorId } = useFieldContext()
 
   if (!children) {
     return null
@@ -77,7 +95,7 @@ function FieldError({
   return (
     <p
       data-slot="field-error"
-      id={`${id}-error`}
+      id={errorId}
       className={cn("text-xs font-medium text-destructive", className)}
       {...props}
     >
@@ -86,44 +104,13 @@ function FieldError({
   )
 }
 
-function FieldControl({
-  className,
-  asChild = false,
-  ...props
-}: React.ComponentPropsWithoutRef<"div"> & { asChild?: boolean }) {
-  const { id, error } = useFieldContext()
-  const Comp = asChild ? Slot.Root : "div"
-
-  const childProps = asChild
-    ? {
-        id,
-        "aria-describedby": `${id}-description`,
-        "aria-invalid": error || undefined,
-        "aria-errormessage": error ? `${id}-error` : undefined,
-      }
-    : {}
-
-  return (
-    <Comp data-slot="field-control" className={className} {...props} {...childProps}>
-      {asChild
-        ? React.Children.map(props.children as React.ReactElement, (child) =>
-            React.cloneElement(child, childProps)
-          )
-        : props.children}
-    </Comp>
-  )
-}
-
 function FieldSet({
   className,
   ...props
 }: React.FieldsetHTMLAttributes<HTMLFieldSetElement>) {
-  const { error } = useFieldContext()
-
   return (
     <fieldset
       data-slot="field-set"
-      aria-invalid={error || undefined}
       className={cn("space-y-2 border-none p-0", className)}
       {...props}
     />
@@ -161,7 +148,6 @@ export {
   FieldLabel,
   FieldDescription,
   FieldError,
-  FieldControl,
   FieldSet,
   FieldLegend,
   FieldGroup,

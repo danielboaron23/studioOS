@@ -47,3 +47,16 @@ export const Disabled: Story = {
     </div>
   ),
 };
+
+export const Invalid: Story = {
+  render: () => (
+    <div className="space-y-3">
+      <label className="flex items-center gap-2 text-sm">
+        <Switch aria-invalid="true" /> Required setting
+      </label>
+      <label className="flex items-center gap-2 text-sm">
+        <Switch defaultChecked aria-invalid="true" /> Invalid configuration
+      </label>
+    </div>
+  ),
+};

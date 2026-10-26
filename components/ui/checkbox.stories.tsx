@@ -47,3 +47,16 @@ export const Disabled: Story = {
     </div>
   ),
 };
+
+export const Invalid: Story = {
+  render: () => (
+    <div className="space-y-3">
+      <label className="flex items-center gap-2 text-sm">
+        <Checkbox aria-invalid="true" /> Required field
+      </label>
+      <label className="flex items-center gap-2 text-sm">
+        <Checkbox defaultChecked aria-invalid="true" /> Invalid selection
+      </label>
+    </div>
+  ),
+};

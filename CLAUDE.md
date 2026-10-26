@@ -250,6 +250,14 @@ Avatar uses `data-size` + the Tailwind `data-[size=...]:` variant + `group/avata
 | `skeleton.tsx` | `Skeleton` |
 | `tooltip.tsx` | `Tooltip`, `TooltipTrigger`, `TooltipContent` |
 | `chart.tsx` | `ChartContainer`, `ChartTooltip`, `ChartLegend` (recharts wrappers) |
+| `badge.tsx` | `Badge` |
+| `switch.tsx` | `Switch` |
+| `textarea.tsx` | `Textarea` |
+| `sonner.tsx` | `Toaster` (toast notifications) |
+| `radio-group.tsx` | `RadioGroup`, `RadioGroupItem` |
+| `checkbox.tsx` | `Checkbox` |
+| `label.tsx` | `Label` |
+| `field.tsx` | `Field`, `FieldLabel`, `FieldDescription`, `FieldError`, `FieldSet`, `FieldLegend`, `FieldGroup` |
 
 If a Figma component matches an existing primitive — **use it.** Don't recreate `Button`/`Card`/`Input`.
 
@@ -318,9 +326,15 @@ Notes:
 
 ### Documentation / Storybook
 
-**There is no Storybook today.** No `.stories.tsx` files, no `.storybook/` directory, no MDX docs. Component contracts live in their TypeScript types and `data-slot`/`data-size`/`data-variant` attributes.
+**Storybook is configured and running.** The codebase has a `.storybook/` directory with configuration and 20+ `.stories.tsx` files for primitives and feature components. Component stories demonstrate variants, states, and usage patterns. Run `npm run storybook` for the dev server or `npm run build-storybook` to build the static site.
 
-If you're asked to add a component for a Figma node, use the existing primitives + the file/folder conventions above — don't create a new doc system unless explicitly requested.
+Component contracts are documented through:
+- TypeScript types and interfaces
+- `data-slot`/`data-size`/`data-variant` attributes
+- Storybook stories with interactive controls
+- Play functions for interaction testing
+
+If you're asked to add a component, include a `.stories.tsx` file following the existing patterns in `components/ui/*.stories.tsx`.
 
 ---
 
