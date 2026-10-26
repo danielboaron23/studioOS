@@ -153,7 +153,7 @@ Two tiers, lined up by directory:
 
 | Tier | Location | Purpose | Examples |
 |---|---|---|---|
-| **Primitives** | `components/ui/` | shadcn/ui components wrapping Radix. Stateless, generic, design-system-only. | `Button`, `Card`, `Input`, `Tabs`, `Avatar`, `Sheet`, `Sidebar`, `Tooltip`, `Skeleton`, `Select`, `Separator`, `Chart` |
+| **Primitives** | `components/ui/` | shadcn/ui components wrapping Radix. Stateless, generic, design-system-only. 22 components total. | `Button`, `Card`, `Input`, `Tabs`, `Avatar`, `Sheet`, `Sidebar`, `Tooltip`, `Skeleton`, `Select`, `Separator`, `Chart`, `Dialog`, `DropdownMenu`, and form primitives (`Switch`, `Checkbox`, `RadioGroup`, `Label`, `Field`, `Textarea`, `Sonner`) |
 | **Feature components** | `components/`, `components/<feature>/` | Composed product UI. May contain business logic and data. | `Header`, `AppSidebar`, `components/projects/*` (HealthBadge, ProjectPulseCard, PulseSection, AllProjectsTable) |
 
 ### Primitives — conventions
@@ -236,6 +236,8 @@ Avatar uses `data-size` + the Tailwind `data-[size=...]:` variant + `group/avata
 
 ### Existing primitive inventory (`components/ui/`)
 
+**22 components total, 20 with stories:**
+
 | File | Components |
 |---|---|
 | `button.tsx` | `Button`, `buttonVariants` |
@@ -257,7 +259,9 @@ Avatar uses `data-size` + the Tailwind `data-[size=...]:` variant + `group/avata
 | `radio-group.tsx` | `RadioGroup`, `RadioGroupItem` |
 | `checkbox.tsx` | `Checkbox` |
 | `label.tsx` | `Label` |
-| `field.tsx` | `Field`, `FieldLabel`, `FieldDescription`, `FieldError`, `FieldSet`, `FieldLegend`, `FieldGroup` |
+| `field.tsx` | `Field`, `FieldContent`, `FieldLabel`, `FieldTitle`, `FieldDescription`, `FieldError`, `FieldSeparator`, `FieldSet`, `FieldLegend`, `FieldGroup` |
+| `dialog.tsx` | `Dialog`, `DialogTrigger`, `DialogContent`, `DialogHeader`, `DialogTitle`, … (no story yet) |
+| `dropdown-menu.tsx` | `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, `DropdownMenuItem`, … (no story yet) |
 
 If a Figma component matches an existing primitive — **use it.** Don't recreate `Button`/`Card`/`Input`.
 
@@ -326,7 +330,7 @@ Notes:
 
 ### Documentation / Storybook
 
-**Storybook is configured and running.** The codebase has a `.storybook/` directory with configuration and 20+ `.stories.tsx` files for primitives and feature components. Component stories demonstrate variants, states, and usage patterns. Run `npm run storybook` for the dev server or `npm run build-storybook` to build the static site.
+**Storybook is configured and running.** The codebase has a `.storybook/` directory with configuration and 20 `.stories.tsx` files for primitives and feature components. Component stories demonstrate variants, states, and usage patterns. Stories include play functions for interaction testing. Run `npm run storybook` for the dev server or `npm run build-storybook` to build the static site.
 
 Component contracts are documented through:
 - TypeScript types and interfaces
@@ -551,7 +555,7 @@ studio-os-next/
 │   ├── tasks/              ← /tasks (placeholder)
 │   └── team/               ← /team (placeholder)
 ├── components/
-│   ├── ui/                 ← shadcn/ui primitives (12 files)
+│   ├── ui/                 ← shadcn/ui primitives (22 files)
 │   ├── projects/           ← Projects feature folder
 │   ├── header.tsx          ← Top bar (search, theme toggle, user)
 │   └── sidebar.tsx         ← App sidebar (mainNav + secondaryNav + TeamSwitcher)
@@ -660,7 +664,7 @@ There are no Code Connect `.figma.ts` mappings checked in yet. If asked to set u
 
 ## 10. Open gaps (be aware before promising)
 
-- **No Storybook.** No `.stories.tsx`, no isolated component playground.
+- **Storybook configured with 20 stories.** Stories cover all major primitives. Two components (dialog, dropdown-menu) exist but have no stories yet.
 - **No design-token export.** No `tokens.json`, Style Dictionary, or Figma Tokens sync.
 - **No Code Connect mappings checked in.**
 - **No formal type scale or spacing scale** beyond Tailwind defaults — typography choices are ad-hoc per component.
