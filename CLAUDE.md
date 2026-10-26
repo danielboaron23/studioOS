@@ -330,13 +330,13 @@ Notes:
 
 ### Documentation / Storybook
 
-**Storybook is configured and running.** The codebase has a `.storybook/` directory with configuration and 20 `.stories.tsx` files for primitives and feature components. Component stories demonstrate variants, states, and usage patterns. Stories include play functions for interaction testing. Run `npm run storybook` for the dev server or `npm run build-storybook` to build the static site.
+**Storybook is configured and running.** The codebase has a `.storybook/` directory with configuration and 23 `.stories.tsx` files (20 primitives, 3 feature components). Component stories demonstrate variants, states, and usage patterns. Run `npm run storybook` for the dev server or `npm run build-storybook` to build the static site.
 
 Component contracts are documented through:
 - TypeScript types and interfaces
 - `data-slot`/`data-size`/`data-variant` attributes
 - Storybook stories with interactive controls
-- Play functions for interaction testing
+- Play functions for interaction testing (Field stories only)
 
 If you're asked to add a component, include a `.stories.tsx` file following the existing patterns in `components/ui/*.stories.tsx`.
 
