@@ -6,10 +6,10 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const nav = [
-  { id: "profile", label: "Profile", href: "/studioOS/settings/profile", icon: User },
-  { id: "appearance", label: "Appearance", href: "/studioOS/settings/appearance", icon: Palette },
-  { id: "notifications", label: "Notifications", href: "/studioOS/settings/notifications", icon: Bell },
-  { id: "workspace", label: "Workspace", href: "/studioOS/settings/workspace", icon: Briefcase },
+  { id: "profile", label: "Profile", href: "/settings/profile", icon: User },
+  { id: "appearance", label: "Appearance", href: "/settings/appearance", icon: Palette },
+  { id: "notifications", label: "Notifications", href: "/settings/notifications", icon: Bell },
+  { id: "workspace", label: "Workspace", href: "/settings/workspace", icon: Briefcase },
 ];
 
 export default function SettingsLayout({
