@@ -7,13 +7,6 @@ import { Button } from './button';
 const meta: Meta<typeof Toaster> = {
   title: 'Primitives/Toast',
   component: Toaster,
-  decorators: [
-    (Story) => (
-      <>
-        <Story />
-      </>
-    ),
-  ],
   parameters: {
     docs: {
       description: {

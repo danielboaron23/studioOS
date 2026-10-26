@@ -10,6 +10,9 @@ import {
 } from "lucide-react"
 import { Toaster as Sonner, type ToasterProps } from "sonner"
 
+// Use a local MutationObserver to track the .dark class on <html> instead of next-themes
+// to avoid adding next-themes as a dependency. The app manages dark mode via a simple
+// class toggle in components/header.tsx.
 function useTheme() {
   const [theme, setTheme] = React.useState<'light' | 'dark'>(() => {
     if (typeof document === 'undefined') return 'light'

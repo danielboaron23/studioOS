@@ -41,9 +41,9 @@ export const Default: Story = {
       <Field>
         <FieldContent>
           <FieldLabel htmlFor={id}>Email</FieldLabel>
-          <Input 
+          <Input
             id={id}
-            type="email" 
+            type="email"
             placeholder="you@example.com"
             aria-describedby={descriptionId}
           />
@@ -71,7 +71,7 @@ export const WithError: Story = {
       <Field data-invalid="true">
         <FieldContent>
           <FieldLabel htmlFor={id}>Username</FieldLabel>
-          <Input 
+          <Input
             id={id}
             defaultValue="a"
             aria-invalid="true"
@@ -105,7 +105,7 @@ export const WithTextarea: Story = {
       <Field>
         <FieldContent>
           <FieldLabel htmlFor={id}>Bio</FieldLabel>
-          <Textarea 
+          <Textarea
             id={id}
             placeholder="Tell us about yourself…"
             aria-describedby={descriptionId}
@@ -203,9 +203,9 @@ export const MultipleFields: Story = {
       <Field>
         <FieldContent>
           <FieldLabel htmlFor="email-multi-field">Email</FieldLabel>
-          <Input 
-            id="email-multi-field" 
-            type="email" 
+          <Input
+            id="email-multi-field"
+            type="email"
             placeholder="john@example.com"
             aria-describedby="email-multi-field-description"
           />
@@ -222,4 +222,3 @@ export const MultipleFields: Story = {
     </form>
   ),
 };
-

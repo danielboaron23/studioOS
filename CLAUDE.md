@@ -153,7 +153,7 @@ Two tiers, lined up by directory:
 
 | Tier | Location | Purpose | Examples |
 |---|---|---|---|
-| **Primitives** | `components/ui/` | shadcn/ui components wrapping Radix. Stateless, generic, design-system-only. 22 components total. | `Button`, `Card`, `Input`, `Tabs`, `Avatar`, `Sheet`, `Sidebar`, `Tooltip`, `Skeleton`, `Select`, `Separator`, `Chart`, `Dialog`, `DropdownMenu`, and form primitives (`Switch`, `Checkbox`, `RadioGroup`, `Label`, `Field`, `Textarea`, `Sonner`) |
+| **Primitives** | `components/ui/` | shadcn/ui components wrapping Radix. Stateless, generic, design-system-only. 22 components total. | `Button`, `Card`, `Input`, `Tabs`, `Avatar`, `Sheet`, `Sidebar`, `Tooltip`, `Skeleton`, `Select`, `Separator`, `Chart`, `Dialog`, `DropdownMenu`, and form primitives (`Switch`, `Checkbox`, `RadioGroup`, `Label`, `Field`, `Textarea`, `Toaster`) |
 | **Feature components** | `components/`, `components/<feature>/` | Composed product UI. May contain business logic and data. | `Header`, `AppSidebar`, `components/projects/*` (HealthBadge, ProjectPulseCard, PulseSection, AllProjectsTable) |
 
 ### Primitives — conventions
@@ -262,6 +262,24 @@ Avatar uses `data-size` + the Tailwind `data-[size=...]:` variant + `group/avata
 | `field.tsx` | `Field`, `FieldContent`, `FieldLabel`, `FieldTitle`, `FieldDescription`, `FieldError`, `FieldSeparator`, `FieldSet`, `FieldLegend`, `FieldGroup` |
 | `dialog.tsx` | `Dialog`, `DialogTrigger`, `DialogContent`, `DialogHeader`, `DialogTitle`, … (no story yet) |
 | `dropdown-menu.tsx` | `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, `DropdownMenuItem`, … (no story yet) |
+
+### Deviations from stock shadcn
+
+Most primitives are verbatim from the shadcn new-york-v4 registry with only import path adaptations. The following intentional deviations exist:
+
+1. **`checkbox.tsx`** — Adds indeterminate state support:
+   - Includes `Minus` icon alongside `Check`
+   - Uses `group/checkbox` and `group-data-[state=indeterminate]/checkbox:block` to toggle icons
+   - Adds `dark:data-[state=checked]:bg-primary` and `dark:data-[state=indeterminate]:bg-primary` to fix dark mode regression where `dark:bg-input/30` would override the checked/indeterminate background
+   - Allows `defaultChecked="indeterminate"` to work properly
+
+2. **`switch.tsx`** — Adds RTL support and aria-invalid styling:
+   - Adds `rtl:data-[state=checked]:-translate-x-[calc(100%-2px)]` and `rtl:data-[state=unchecked]:translate-x-0` to keep thumb within track bounds in RTL mode
+   - Adds `aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40` for form validation feedback
+
+3. **`sonner.tsx`** — Uses local MutationObserver instead of next-themes:
+   - Implements `useTheme()` hook that watches `document.documentElement.classList` for `.dark` class changes
+   - Avoids adding `next-themes` as a dependency since the app manages dark mode via a simple class toggle in `components/header.tsx`
 
 If a Figma component matches an existing primitive — **use it.** Don't recreate `Button`/`Card`/`Input`.
 
@@ -555,7 +573,7 @@ studio-os-next/
 │   ├── tasks/              ← /tasks (placeholder)
 │   └── team/               ← /team (placeholder)
 ├── components/
-│   ├── ui/                 ← shadcn/ui primitives (22 files)
+│   ├── ui/                 ← shadcn/ui primitives (22 components)
 │   ├── projects/           ← Projects feature folder
 │   ├── header.tsx          ← Top bar (search, theme toggle, user)
 │   └── sidebar.tsx         ← App sidebar (mainNav + secondaryNav + TeamSwitcher)
@@ -664,7 +682,7 @@ There are no Code Connect `.figma.ts` mappings checked in yet. If asked to set u
 
 ## 10. Open gaps (be aware before promising)
 
-- **Storybook configured with 20 stories.** Stories cover all major primitives. Two components (dialog, dropdown-menu) exist but have no stories yet.
+- **Storybook configured with 23 stories (20 primitives + 3 feature).** Stories cover all major primitives. Two components (dialog, dropdown-menu) exist but have no stories yet.
 - **No design-token export.** No `tokens.json`, Style Dictionary, or Figma Tokens sync.
 - **No Code Connect mappings checked in.**
 - **No formal type scale or spacing scale** beyond Tailwind defaults — typography choices are ad-hoc per component.

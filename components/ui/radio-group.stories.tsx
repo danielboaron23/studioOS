@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { RadioGroup, RadioGroupItem } from './radio-group';
+import { Label } from './label';
 
 const meta: Meta<typeof RadioGroup> = {
   title: 'Primitives/RadioGroup',
@@ -21,23 +22,17 @@ type Story = StoryObj<typeof RadioGroup>;
 export const Default: Story = {
   render: () => (
     <RadioGroup defaultValue="comfortable">
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center gap-2">
         <RadioGroupItem value="default" id="r1" />
-        <label htmlFor="r1" className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          Default
-        </label>
+        <Label htmlFor="r1">Default</Label>
       </div>
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center gap-2">
         <RadioGroupItem value="comfortable" id="r2" />
-        <label htmlFor="r2" className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          Comfortable
-        </label>
+        <Label htmlFor="r2">Comfortable</Label>
       </div>
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center gap-2">
         <RadioGroupItem value="compact" id="r3" />
-        <label htmlFor="r3" className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          Compact
-        </label>
+        <Label htmlFor="r3">Compact</Label>
       </div>
     </RadioGroup>
   ),
@@ -46,23 +41,17 @@ export const Default: Story = {
 export const Horizontal: Story = {
   render: () => (
     <RadioGroup defaultValue="card" className="flex gap-4">
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center gap-2">
         <RadioGroupItem value="card" id="h1" />
-        <label htmlFor="h1" className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          Card
-        </label>
+        <Label htmlFor="h1">Card</Label>
       </div>
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center gap-2">
         <RadioGroupItem value="paypal" id="h2" />
-        <label htmlFor="h2" className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          PayPal
-        </label>
+        <Label htmlFor="h2">PayPal</Label>
       </div>
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center gap-2">
         <RadioGroupItem value="apple" id="h3" />
-        <label htmlFor="h3" className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          Apple Pay
-        </label>
+        <Label htmlFor="h3">Apple Pay</Label>
       </div>
     </RadioGroup>
   ),
@@ -71,17 +60,13 @@ export const Horizontal: Story = {
 export const Disabled: Story = {
   render: () => (
     <RadioGroup defaultValue="enabled">
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center gap-2">
         <RadioGroupItem value="enabled" id="d1" />
-        <label htmlFor="d1" className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          Enabled
-        </label>
+        <Label htmlFor="d1">Enabled</Label>
       </div>
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center gap-2">
         <RadioGroupItem value="disabled" id="d2" disabled />
-        <label htmlFor="d2" className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          Disabled
-        </label>
+        <Label htmlFor="d2">Disabled</Label>
       </div>
     </RadioGroup>
   ),
@@ -90,17 +75,13 @@ export const Disabled: Story = {
 export const Invalid: Story = {
   render: () => (
     <RadioGroup>
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center gap-2">
         <RadioGroupItem value="option1" id="inv1" aria-invalid="true" />
-        <label htmlFor="inv1" className="text-sm leading-none">
-          Required option
-        </label>
+        <Label htmlFor="inv1">Required option</Label>
       </div>
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center gap-2">
         <RadioGroupItem value="option2" id="inv2" aria-invalid="true" />
-        <label htmlFor="inv2" className="text-sm leading-none">
-          Another option
-        </label>
+        <Label htmlFor="inv2">Another option</Label>
       </div>
     </RadioGroup>
   ),

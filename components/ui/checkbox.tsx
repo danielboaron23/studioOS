@@ -22,8 +22,8 @@ function Checkbox({
         data-slot="checkbox-indicator"
         className="flex items-center justify-center text-current"
       >
-        <Minus className="size-3 hidden group-data-[state=indeterminate]/checkbox:block" />
-        <Check className="size-3 hidden group-data-[state=checked]/checkbox:block" />
+        <Minus className="size-3.5 hidden group-data-[state=indeterminate]/checkbox:block" />
+        <Check className="size-3.5 hidden group-data-[state=checked]/checkbox:block" />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   )
