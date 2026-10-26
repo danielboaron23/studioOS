@@ -1,67 +1,46 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Moon, Sun, Search } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { SidebarTrigger } from "@/components/ui/sidebar"
-
-const userName = "Hani Buskila"
-
-function getInitials(name: string) {
-  return name
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join("")
-    .toUpperCase()
-}
+import { useSyncExternalStore } from "react";
+import { Moon, Sun, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { getTheme, setTheme, subscribeTheme, getThemeSnapshot } from "@/lib/theme";
+import { getSettings, subscribeSettings, getSettingsSnapshot } from "@/lib/settings-store";
 
 function ThemeToggle() {
-  const [mounted, setMounted] = useState(false)
-  const [theme, setTheme] = useState<"light" | "dark">("light")
-
-  useEffect(() => {
-    const stored = localStorage.getItem("theme")
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
-    const initial = stored === "dark" || (!stored && prefersDark) ? "dark" : "light"
-    // localStorage/matchMedia are unavailable during SSR, so the real theme can
-    // only be read after mount; the mounted-guard avoids a hydration mismatch.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setTheme(initial)
-    document.documentElement.classList.toggle("dark", initial === "dark")
-    setMounted(true)
-  }, [])
+  const theme = useSyncExternalStore(subscribeTheme, getThemeSnapshot, () => "system");
 
   function toggle() {
-    const next = theme === "light" ? "dark" : "light"
-    setTheme(next)
-    localStorage.setItem("theme", next)
-    document.documentElement.classList.toggle("dark", next === "dark")
+    const current = getTheme();
+    const next = current === "light" ? "dark" : current === "dark" ? "system" : "light";
+    setTheme(next);
   }
 
-  if (!mounted) {
-    return (
-      <Button variant="ghost" size="icon" disabled>
-        <Moon className="size-5" />
-        <span className="sr-only">Toggle theme</span>
-      </Button>
-    )
-  }
+  const Icon = theme === "dark" ? Sun : Moon;
 
   return (
     <Button variant="ghost" size="icon" onClick={toggle}>
-      {theme === "light" ? <Moon className="size-5" /> : <Sun className="size-5" />}
+      <Icon className="size-5" />
       <span className="sr-only">Toggle theme</span>
     </Button>
-  )
+  );
 }
 
 export function Header() {
+  const settings = useSyncExternalStore(subscribeSettings, getSettingsSnapshot, getSettings);
+  const { displayName, role, avatar } = settings.profile;
+
+  const initials = displayName
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .substring(0, 2);
+
   return (
-    <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
+    <header className="flex h-14 shrink-0 items-center gap-2 px-4">
       <SidebarTrigger className="-ml-1" />
 
       <div className="relative flex-1 max-w-sm">
@@ -75,15 +54,14 @@ export function Header() {
 
       <div className="flex items-center gap-2">
         <div className="hidden sm:flex flex-col items-end leading-tight">
-          <span className="text-sm font-medium">{userName}</span>
-          <span className="text-xs text-muted-foreground">Product Designer</span>
+          <span className="text-sm font-medium">{displayName}</span>
+          <span className="text-xs text-muted-foreground">{role}</span>
         </div>
         <Avatar size="sm">
-          <AvatarFallback className="bg-[#3b82f5] text-white font-bold">
-            {getInitials(userName)}
-          </AvatarFallback>
+          <AvatarImage src={avatar} alt={displayName} />
+          <AvatarFallback className="font-bold">{initials}</AvatarFallback>
         </Avatar>
       </div>
     </header>
-  )
+  );
 }
