@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { getTheme, setTheme, subscribeTheme, getThemeSnapshot } from "@/lib/theme";
-import { getSettings, subscribeSettings, getSettingsSnapshot } from "@/lib/settings-store";
+import { subscribeSettings, getSettingsSnapshot, getDefaultSettingsSnapshot } from "@/lib/settings-store";
 
 function ThemeToggle() {
   const theme = useSyncExternalStore(subscribeTheme, getThemeSnapshot, () => "system");
@@ -29,11 +29,14 @@ function ThemeToggle() {
 }
 
 export function Header() {
-  const settings = useSyncExternalStore(subscribeSettings, getSettingsSnapshot, getSettings);
-  const { displayName, role, avatar } = settings.profile;
+  const settings = useSyncExternalStore(subscribeSettings, getSettingsSnapshot, getDefaultSettingsSnapshot);
+  const { displayName: rawDisplayName, role, avatar } = settings.profile;
 
+  const displayName = rawDisplayName && rawDisplayName.trim() ? rawDisplayName : "Hani Buskila";
+  
   const initials = displayName
-    .split(" ")
+    .split(/\s+/)
+    .filter(n => n.length > 0)
     .map((n) => n[0])
     .join("")
     .toUpperCase()

@@ -64,7 +64,16 @@ const defaultSettings: Settings = {
 };
 
 let settings: Settings = { ...defaultSettings };
+let cachedSnapshot: Settings = settings;
 const listeners = new Set<(settings: Settings) => void>();
+
+function isString(value: unknown): value is string {
+  return typeof value === "string";
+}
+
+function isBoolean(value: unknown): value is boolean {
+  return typeof value === "boolean";
+}
 
 function loadSettings(): Settings {
   if (typeof localStorage === "undefined") {
@@ -80,11 +89,36 @@ function loadSettings(): Settings {
       return { ...defaultSettings };
     }
 
+    const data = parsed.data;
+    
     return {
-      profile: { ...defaultSettings.profile, ...parsed.data.profile },
-      appearance: { ...defaultSettings.appearance, ...parsed.data.appearance },
-      notifications: { ...defaultSettings.notifications, ...parsed.data.notifications },
-      workspace: { ...defaultSettings.workspace, ...parsed.data.workspace },
+      profile: {
+        displayName: isString(data.profile?.displayName) ? data.profile.displayName : defaultSettings.profile.displayName,
+        role: isString(data.profile?.role) ? data.profile.role : defaultSettings.profile.role,
+        email: isString(data.profile?.email) ? data.profile.email : defaultSettings.profile.email,
+        bio: isString(data.profile?.bio) ? data.profile.bio : defaultSettings.profile.bio,
+        avatar: isString(data.profile?.avatar) ? data.profile.avatar : defaultSettings.profile.avatar,
+      },
+      appearance: {
+        theme: (data.appearance?.theme === "light" || data.appearance?.theme === "dark" || data.appearance?.theme === "system") 
+          ? data.appearance.theme 
+          : defaultSettings.appearance.theme,
+        density: (data.appearance?.density === "comfortable" || data.appearance?.density === "compact")
+          ? data.appearance.density
+          : defaultSettings.appearance.density,
+        reducedMotion: isBoolean(data.appearance?.reducedMotion) ? data.appearance.reducedMotion : defaultSettings.appearance.reducedMotion,
+      },
+      notifications: {
+        emailNotifications: isBoolean(data.notifications?.emailNotifications) ? data.notifications.emailNotifications : defaultSettings.notifications.emailNotifications,
+        pushNotifications: isBoolean(data.notifications?.pushNotifications) ? data.notifications.pushNotifications : defaultSettings.notifications.pushNotifications,
+        weeklyDigest: isBoolean(data.notifications?.weeklyDigest) ? data.notifications.weeklyDigest : defaultSettings.notifications.weeklyDigest,
+        projectUpdates: isBoolean(data.notifications?.projectUpdates) ? data.notifications.projectUpdates : defaultSettings.notifications.projectUpdates,
+      },
+      workspace: {
+        workspaceName: isString(data.workspace?.workspaceName) ? data.workspace.workspaceName : defaultSettings.workspace.workspaceName,
+        workspaceLogo: isString(data.workspace?.workspaceLogo) ? data.workspace.workspaceLogo : defaultSettings.workspace.workspaceLogo,
+        defaultProject: isString(data.workspace?.defaultProject) ? data.workspace.defaultProject : defaultSettings.workspace.defaultProject,
+      },
     };
   } catch {
     return { ...defaultSettings };
@@ -122,6 +156,7 @@ export function updateSettings(partial: Partial<Settings>) {
     notifications: { ...settings.notifications, ...(partial.notifications || {}) },
     workspace: { ...settings.workspace, ...(partial.workspace || {}) },
   };
+  cachedSnapshot = settings;
   saveSettings(settings);
   notifyListeners();
 }
@@ -132,10 +167,17 @@ export function subscribeSettings(listener: (settings: Settings) => void) {
 }
 
 export function getSettingsSnapshot(): Settings {
-  return settings;
+  return cachedSnapshot;
+}
+
+function getDefaultSettingsSnapshot(): Settings {
+  return defaultSettings;
 }
 
 // Initialize on client
 if (typeof window !== "undefined") {
   settings = loadSettings();
+  cachedSnapshot = settings;
 }
+
+export { getDefaultSettingsSnapshot };
